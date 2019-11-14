@@ -1,4 +1,4 @@
-module github.com/multi-io/kube-pod
+module github.com/multi-io/kube-pod-update-status
 
 go 1.12
 

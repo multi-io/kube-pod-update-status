@@ -17,7 +17,7 @@ func main() {
     )
 
     flag.StringVar(&kubeconfigPath, "kubeconfigPath", "", "Path to a kubeconfigPath.")
-    flag.StringVar(&namespace, "namespace", "", "Path to a kubeconfigPath.")
+    flag.StringVar(&namespace, "namespace", "", "K8s namespace (default: default)")
 
     flag.Parse()
 
