@@ -4,23 +4,34 @@ import (
     "flag"
     "fmt"
     "github.com/golang/glog"
+    "k8s.io/client-go/kubernetes"
     "k8s.io/client-go/tools/clientcmd"
+    "os"
 )
 
 var (
-    kubeconfig                       string
+    kubeconfigPath string
 )
 
 
 func main() {
-    flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig.")
+    flag.StringVar(&kubeconfigPath, "kubeconfigPath", "", "Path to a kubeconfigPath.")
 
     flag.Parse()
 
-    cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-    if err != nil {
-        glog.Fatalf("error building kubeconfig: %v", err)
+    if kubeconfigPath == "" {
+        kubeconfigPath = os.Getenv("KUBECONFIG")
     }
 
-    fmt.Printf("get kubeconfig: %v", cfg)
+    kubeconfig, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+    if err != nil {
+        glog.Fatalf("error building kubeconfigPath: %v", err)
+    }
+
+    kubeClient, err := kubernetes.NewForConfig(kubeconfig)
+    if err != nil {
+        glog.Fatalf("error building kubernetes clientset for kubeClient: %v", err)
+    }
+
+    fmt.Printf("got kubeClient: %v", kubeClient)
 }
